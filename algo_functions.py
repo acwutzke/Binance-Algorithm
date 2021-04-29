@@ -41,7 +41,7 @@ def buy(stream,quantity):
 #         return False
 #     return True
 
-def algo_log(text):
+def log(text):
     time=str(datetime.datetime.now())[:16]
     text=time+' : '+str(text)
     with open(r'C:\Users\Alex\Desktop\Binance-Algorithm\log.txt', 'a') as f:
