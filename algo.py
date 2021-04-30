@@ -50,9 +50,9 @@ def on_message(message):
 	portfolio[stream]['prices']=portfolio[stream]['prices'][-300:]
 
 	# calculate emas
-	if len(portfolio[stream]['prices'])>50:
-		ema10=ema(portfolio[stream]['prices'],10)
-		ema30=ema(portfolio[stream]['prices'],30)
+	if len(portfolio[stream]['prices'])>200:
+		ema10=ema(portfolio[stream]['prices'],30)
+		ema30=ema(portfolio[stream]['prices'],100)
 		if ema10<ema30:
 			portfolio[stream]['primed']=True
 	else:
