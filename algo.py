@@ -1,6 +1,6 @@
 
 from binance.websockets import BinanceSocketManager
-import websocket, json, numpy, pandas
+import websocket, json, numpy, pandas, datetime
 import config
 from algo_functions import *
 from binance.client import Client
@@ -44,6 +44,7 @@ def on_message(message):
 	quantity=portfolio[stream]['quantity']
 	primed=portfolio[stream]['primed']
 	profit=0.000000
+	time=str(datetime.datetime.now())[:16]
 
 	# append close and trim
 	portfolio[stream]['prices'].append(float(close)) # put this in an if statement with in_position
@@ -71,11 +72,11 @@ def on_message(message):
 			portfolio[stream]['quantity']=0
 			portfolio[stream]['bought_price']=0
 			log_message=['Sell',symbol,quantity,stop,'STOP',profit]
-			log(log_message)
-			log(CASH)
+			print(log_message)
+			print(CASH)
 
 		else:
-			log('Failed to execute sale on stop price...')
+			# log('Failed to execute sale on stop price...')
 		return
 
 	# check whether ema10 has decreased below ema30
@@ -91,11 +92,11 @@ def on_message(message):
 				portfolio[stream]['quantity']=0
 				portfolio[stream]['bought_price']=0
 				log_message=['Sell',symbol,quantity,close,'EMA',profit]
-				log(log_message)
-				log(CASH)
+				print(log_message)
+				print(CASH)
 
 			else:
-				log('Failed to execute sale on EMA...')
+				# log('Failed to execute sale on EMA...')
 			return
 
 	# check whether ema10 has increased above ema30
@@ -113,11 +114,11 @@ def on_message(message):
 				portfolio[stream]['bought_price']=close
 				CASH=CASH
 				log_message=['Buy',symbol,buy_quantity,close,'EMA']
-				log(log_message)
-				log(CASH)
+				print(log_message)
+				print(CASH)
 
 			else:
-				log('Failed to buy on EMA...')
+				# log('Failed to buy on EMA...')
 		elif ema10>ema30:
 			portfolio[stream]['primed']==False
 		return
