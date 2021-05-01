@@ -74,10 +74,11 @@ def on_message(message):
 			log_message=['Sell',symbol,quantity,stop,'STOP',profit]
 			print(log_message)
 			print(CASH)
+			return
 
 		else:
 			# log('Failed to execute sale on stop price...')
-		return
+		
 
 	# check whether ema10 has decreased below ema30
 	if in_position:
