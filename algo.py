@@ -77,10 +77,9 @@ def on_message(message):
 			return
 
 		else:
+			return
 			# log('Failed to execute sale on stop price...')
 		
-
-	# check whether ema10 has decreased below ema30
 	if in_position:
 		if ema10<ema30:
 			# order_successful=sell(symbol,quantity)
@@ -98,7 +97,7 @@ def on_message(message):
 
 			else:
 				# log('Failed to execute sale on EMA...')
-			return
+				return
 
 	# check whether ema10 has increased above ema30
 	else:
@@ -120,9 +119,10 @@ def on_message(message):
 
 			else:
 				# log('Failed to buy on EMA...')
+				return
 		elif ema10>ema30:
 			portfolio[stream]['primed']==False
-		return
+			return
 
 
 
