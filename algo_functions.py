@@ -44,7 +44,7 @@ def buy(stream,quantity):
 def log(text):
     time=str(datetime.datetime.now())[:16]
     text=time+' : '+str(text)
-    with open(r'C:\Users\Alex\Desktop\Binance-Algorithm\log.txt', 'a') as f:
+    with open(r'log.txt', 'a') as f:
         f.write(text)
         f.write('\n')
 
