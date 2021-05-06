@@ -126,6 +126,7 @@ def on_message(message):
 			if order_successful:
 				print(order_info) # can remove later
 				order_handler(order_info, stream) # updates cash, quantity, in_position, bought_price, prints to log
+				portfolio[stream]['stop_price']=ema_long
 				return
 			else:
 				log('Trade did not go through, stopping.')
