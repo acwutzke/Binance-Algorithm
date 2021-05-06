@@ -17,30 +17,6 @@ def ema(prices,length):
 		ema.append(current_ema)
 	return ema[-1:][0]
 
-def sell(stream,quantity):
-	order_successful = order(SIDE_SELL, quantity, stream)
-	if order_successful:
-		return True
-	else:
-		return False
-    	
-def buy(stream,quantity):
-	order_successful = order(SIDE_BUY, quantity, stream)
-	if order_successful:
-		return True
-	else:
-		return False
-
-# def order(side, quantity, symbol,order_type=ORDER_TYPE_MARKET):
-#     try:
-#         print("sending order")
-#         order = client.create_order(symbol=symbol, side=side, type=order_type, quantity=quantity)
-#         print(order)
-#     except Exception as e:
-#         print("an exception occured - {}".format(e))
-#         return False
-#     return True
-
 def log(text):
     time=str(datetime.datetime.now())[:16]
     text=time+' : '+str(text)
@@ -48,13 +24,45 @@ def log(text):
         f.write(text)
         f.write('\n')
 
-def holdings(portfolio):
-	hold={}
-	for p in portfolio:
-		if portfolio[p]['in_position']:
-				hold[p]=[portfolio[p]['quantity'],portfolio[p]['bought_price']]
+def roundown(num):
+    num=str(num)
+    new=float(num[:num.find('.')+7])
+    return new
 
-	print(hold)
+def buy(symbol,quantity):
+	try:
+		order = client.create_order(
+		symbol=symbol,
+		side=SIDE_BUY,
+		type=ORDER_TYPE_MARKET,
+		quantity=quantity
+		)
+	except Exception as e:
+		print("an exception occured - {}".format(e))
+		return False
+	return True, order
+
+def sell(symbol,quantity):
+	try:
+		order = client.create_order(
+		    symbol=symbol,
+		    side=SIDE_SELL,
+		    type=ORDER_TYPE_MARKET,
+		    quantity=quantity
+		    )
+	except Exception as e:
+		print("an exception occured - {}".format(e))
+		return False
+	return True, order
+
+def holdings(portfolio):
+    holdings={}
+    for h in portfolio:
+        if portfolio[h]['in_position']:
+            holdings[h]={}
+            holdings[h]['quantity']=portfolio[h]['quantity']
+            holdings[h]['bought_price']=portfolio[h]['bought_price']
+    return holdings
 
 
 

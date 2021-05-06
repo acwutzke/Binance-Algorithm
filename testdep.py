@@ -9,29 +9,90 @@ from binance.enums import *
 client = Client(config.API_KEY, config.API_SECRET)
 bm = BinanceSocketManager(client)
 
-log("test log")
 
-# balance = client.get_asset_balance(asset='USDT')
+def buy(symbol,quantity):
+	try:
+		order = client.create_order(
+		symbol=symbol,
+		side=SIDE_BUY,
+		type=ORDER_TYPE_MARKET,
+		quantity=quantity
+		)
+	except Exception as e:
+		print("an exception occured - {}".format(e))
+		return False
+	log(order)
+	return True, order
 
-# print(balance)
+def sell(symbol,quantity):
+	try:
+		order = client.create_order(
+		    symbol=symbol,
+		    side=SIDE_SELL,
+		    type=ORDER_TYPE_MARKET,
+		    quantity=quantity
+		    )
+	except Exception as e:
+		print("an exception occured - {}".format(e))
+		return False
+	log(order)
+	return True, order
 
-# quant=float(balance['free'][:8])
-# print(quant)
+
+def order_handler(order_info, stream):
+	global portfolio, CASH
+	fills=order_info['fills']
+	side=order_info['side']
+	log(order_info)
+
+	for f in fills:
+		if side=='SELL':
+			portfolio[stream]['quantity']-=float(f['qty'])
+			CASH+=float(f['price'])*float(f['qty'])
+			CASH-=float(f['commission'])
+			portfolio[stream]['in_position']=False
+		if side=='BUY':
+			portfolio[stream]['quantity']+=float(f['qty'])
+			portfolio[stream]['quantity']-=float(f['commission'])
+			CASH-=float(f['price'])*float(f['qty'])
+			portfolio[stream]['bought_price']+=float(f['price'])*float(f['qty'])
+			portfolio[stream]['in_position']=True
+	log(portfolio)
+	log(CASH)
+
+def roundown(num):
+    num=str(num)
+    new=float(num[:num.find('.')+7])
+    return new
 
 
-# def buy(stream,quantity):
-# 	order_successful = order(SIDE_BUY, quantity, stream)
-# 	if order_successful:
-# 		return True
-# 	else:
-# 		return False
+		
 
-# def sell(stream,quantity):
-# 	order_successful = order(SIDE_SELL, quantity, stream)
-# 	if order_successful:
-# 		return True
-# 	else:
-# 		return False
+
+
+
+
+
+			
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # def order(side, quantity, symbol,order_type=ORDER_TYPE_MARKET):
 #     try:
@@ -43,7 +104,8 @@ log("test log")
 #         return False
 #     return True
 
-# order_succeeded = order(SIDE_SELL, TRADE_QUANTITY, TRADE_SYMBOL)
+# # order_succeeded = order(SIDE_SELL, TRADE_QUANTITY, TRADE_SYMBOL)
+
 
 # order = client.create_order(
 #     symbol='BTCUSDT',
