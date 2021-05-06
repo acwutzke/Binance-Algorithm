@@ -16,8 +16,6 @@ max_pos=2
 total_profit=0
 start=True
 stopper=False
-
-
 portfolio= {}
 
 # instantiate portfolio
@@ -28,7 +26,7 @@ for w in WATCH_LIST:
 	portfolio[w]['stop_price']=0
 	portfolio[w]['quantity']=0
 	portfolio[w]['bought_price']=0
-	portfolio[w]['primed']=False #to indicate that the coin ema_short is below ema_long
+	portfolio[w]['primed']=False # to indicate that the coin ema_short is below ema_long and is ready to be bought on cross above.
 
 def order_handler(order_info, stream):
 	global portfolio, CASH
@@ -75,12 +73,9 @@ def on_message(message):
 	quantity=portfolio[stream]['quantity']
 	primed=portfolio[stream]['primed']
 
-	print(symbol, close)
-	print(portfolio)
-
 	# append close and trim
 	portfolio[stream]['prices'].append(float(close)) # put this in an if statement with in_position
-	portfolio[stream]['prices']=portfolio[stream]['prices'][-600:]
+	portfolio[stream]['prices']=portfolio[stream]['prices'][-600:] # trim
 
 	# calculate emas
 	if len(portfolio[stream]['prices'])>200:
@@ -106,7 +101,6 @@ def on_message(message):
 			# stopper=True
 			return
 
-		
 	if in_position:
 		if ema_short<ema_long:
 			order=sell(symbol,roundown(quantity))
