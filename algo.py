@@ -119,8 +119,10 @@ def on_message(message):
 	else:
 		if ema_short>ema_long and num_positions<max_pos and primed==True:
 			portfolio[stream]['primed']=False
-			quantity=CASH/close/(max_pos-num_positions)
-			order=buy(symbol,roundown(quantity))
+			quantity=round(CASH/close/(max_pos-num_positions),6)
+			log(symbol)
+			log(quantity)
+			order=buy(symbol,quantity) # execute buy order
 			order_successful=order[0]
 			order_info=order[1]
 			if order_successful:
@@ -129,7 +131,7 @@ def on_message(message):
 				portfolio[stream]['stop_price']=ema_long
 				return
 			else:
-				log('Trade did not go through, stopping.')
+				log('Trade did not go through')
 				# stopper=True
 				return
 

@@ -38,8 +38,8 @@ def buy(symbol,quantity):
 		quantity=quantity
 		)
 	except Exception as e:
-		print("an exception occured - {}".format(e))
-		return False
+		log("an exception occured - {}".format(e))
+		return False, False
 	return True, order
 
 def sell(symbol,quantity):
@@ -51,8 +51,8 @@ def sell(symbol,quantity):
 		    quantity=quantity
 		    )
 	except Exception as e:
-		print("an exception occured - {}".format(e))
-		return False
+		log("an exception occured - {}".format(e))
+		return False, False
 	return True, order
 
 def holdings(portfolio):
