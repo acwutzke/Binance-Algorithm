@@ -55,6 +55,32 @@ def order_handler(order_info, stream):
 	log('New cash balance: ' + str(CASH))
 	log(holdings(portfolio)) # print quantity/book value of current holdings
 
+def buy(symbol,quantity):
+	try:
+		order = client.create_order(
+		symbol=symbol,
+		side=SIDE_BUY,
+		type=ORDER_TYPE_MARKET,
+		quantity=quantity
+		)
+	except Exception as e:
+		log("an exception occured - {}".format(e))
+		return False, False
+	return True, order
+
+def sell(symbol,quantity):
+	try:
+		order = client.create_order(
+		    symbol=symbol,
+		    side=SIDE_SELL,
+		    type=ORDER_TYPE_MARKET,
+		    quantity=quantity
+		    )
+	except Exception as e:
+		log("an exception occured - {}".format(e))
+		return False, False
+	return True, order
+
 def on_message(message):
 	global CASH, max_pos, stopper # import variables
 	if stopper==True:

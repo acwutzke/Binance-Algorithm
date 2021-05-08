@@ -29,31 +29,7 @@ def roundown(num):
     new=float(num[:num.find('.')+7])
     return new
 
-def buy(symbol,quantity):
-	try:
-		order = client.create_order(
-		symbol=symbol,
-		side=SIDE_BUY,
-		type=ORDER_TYPE_MARKET,
-		quantity=quantity
-		)
-	except Exception as e:
-		log("an exception occured - {}".format(e))
-		return False, False
-	return True, order
 
-def sell(symbol,quantity):
-	try:
-		order = client.create_order(
-		    symbol=symbol,
-		    side=SIDE_SELL,
-		    type=ORDER_TYPE_MARKET,
-		    quantity=quantity
-		    )
-	except Exception as e:
-		log("an exception occured - {}".format(e))
-		return False, False
-	return True, order
 
 def holdings(portfolio):
     holdings={}
