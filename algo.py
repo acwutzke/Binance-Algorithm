@@ -4,6 +4,7 @@ import websocket, json, numpy, pandas, datetime
 import config
 from algo_functions import *
 from binance.client import Client
+from binance.enums import *
 
 client = Client(config.API_KEY, config.API_SECRET)
 bm = BinanceSocketManager(client)
