@@ -39,26 +39,7 @@ def sell(symbol,quantity):
 	return True, order
 
 
-def order_handler(order_info, stream):
-	global portfolio, CASH
-	fills=order_info['fills']
-	side=order_info['side']
-	log(order_info)
 
-	for f in fills:
-		if side=='SELL':
-			portfolio[stream]['quantity']-=float(f['qty'])
-			CASH+=float(f['price'])*float(f['qty'])
-			CASH-=float(f['commission'])
-			portfolio[stream]['in_position']=False
-		if side=='BUY':
-			portfolio[stream]['quantity']+=float(f['qty'])
-			portfolio[stream]['quantity']-=float(f['commission'])
-			CASH-=float(f['price'])*float(f['qty'])
-			portfolio[stream]['bought_price']+=float(f['price'])*float(f['qty'])
-			portfolio[stream]['in_position']=True
-	log(portfolio)
-	log(CASH)
 
 def roundown(num):
     num=str(num)

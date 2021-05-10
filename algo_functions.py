@@ -24,9 +24,9 @@ def log(text):
         f.write(text)
         f.write('\n')
 
-def roundown(num):
+def roundown(num, dec):
     num=str(num)
-    new=float(num[:num.find('.')+7])
+    new=float(num[:num.find('.')+dec+1])
     return new
 
 

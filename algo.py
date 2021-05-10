@@ -10,6 +10,7 @@ client = Client(config.API_KEY, config.API_SECRET)
 bm = BinanceSocketManager(client)
 
 WATCH_LIST=['dogeusdt@kline_1m', 'btcusdt@kline_1m', 'ethusdt@kline_1m','ltcusdt@kline_1m']
+min_order_decimals=[1,6,5,5]
 
 # total portfolio size of 500 USD and max 2 positions
 CASH=500.00000
@@ -20,6 +21,7 @@ stopper=False
 portfolio= {}
 
 # instantiate portfolio
+cntr=0
 for w in WATCH_LIST:
 	portfolio[w]={}
 	portfolio[w]['prices']=[]
@@ -28,6 +30,8 @@ for w in WATCH_LIST:
 	portfolio[w]['quantity']=0
 	portfolio[w]['bought_price']=0
 	portfolio[w]['primed']=False # to indicate that the coin ema_short is below ema_long and is ready to be bought on cross above.
+	portfolio[w]['decimal']=min_order_decimals[cntr]
+	cntr+=1
 
 def order_handler(order_info, stream):
 	global portfolio, CASH
@@ -116,7 +120,7 @@ def on_message(message):
 
 	# check close against stop price and sell if necessary
 	if in_position and close<stop:
-		order=sell(symbol,roundown(quantity))
+		order=sell(symbol,roundown(quantity, portfolio[stream]['decimal']))
 		order_successful=order[0]
 		order_info=order[1]
 		if order_successful:
@@ -130,7 +134,7 @@ def on_message(message):
 
 	if in_position:
 		if ema_short<ema_long:
-			order=sell(symbol,roundown(quantity))
+			order=sell(symbol,roundown(quantity,portfolio[stream]['decimal']))
 			order_successful=order[0]
 			order_info=order[1]
 			if order_successful:
@@ -146,7 +150,7 @@ def on_message(message):
 	else:
 		if ema_short>ema_long and num_positions<max_pos and primed==True:
 			portfolio[stream]['primed']=False
-			quantity=round(CASH/close/(max_pos-num_positions),6)
+			quantity=round(CASH/close/(max_pos-num_positions),portfolio[stream]['decimal'])
 			log(symbol)
 			log(quantity)
 			order=buy(symbol,quantity) # execute buy order
