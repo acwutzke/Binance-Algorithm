@@ -9,12 +9,12 @@ from binance.enums import *
 client = Client(config.API_KEY, config.API_SECRET)
 bm = BinanceSocketManager(client)
 
-WATCH_LIST=['dogeusdt@kline_1m', 'btcusdt@kline_1m', 'ethusdt@kline_1m','ltcusdt@kline_1m']
-min_order_decimals=[1,6,5,5]
+WATCH_LIST=['dogeusdt@kline_5m', 'btcusdt@kline_5m', 'ethusdt@kline_5m','ltcusdt@kline_5m','eosusdt@kline_5m','bnbusdt@kline_5m','neousdt@kline_5m','xrpusdt@kline_5m','adausdt@kline_5m']
+min_order_decimals=[1,6,5,5,2,4,3,2,2]
 
 # total portfolio size of 500 USD and max 2 positions
-CASH=500.00000
-max_pos=2
+CASH=750.00000
+max_pos=3
 total_profit=0
 start=True
 stopper=False
@@ -109,9 +109,9 @@ def on_message(message):
 	portfolio[stream]['prices']=portfolio[stream]['prices'][-600:] # trim
 
 	# calculate emas
-	if len(portfolio[stream]['prices'])>200:
-		ema_short=ema(portfolio[stream]['prices'],30)
-		ema_long=ema(portfolio[stream]['prices'],100)
+	if len(portfolio[stream]['prices'])>500:
+		ema_short=ema(portfolio[stream]['prices'],50)
+		ema_long=ema(portfolio[stream]['prices'],300)
 		if ema_short<ema_long:
 			portfolio[stream]['primed']=True
 	else:
