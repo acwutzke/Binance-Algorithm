@@ -109,9 +109,9 @@ def on_message(message):
 	portfolio[stream]['prices']=portfolio[stream]['prices'][-600:] # trim
 
 	# calculate emas
-	if len(portfolio[stream]['prices'])>500:
-		ema_short=ema(portfolio[stream]['prices'],50)
-		ema_long=ema(portfolio[stream]['prices'],300)
+	if len(portfolio[stream]['prices'])>200:
+		ema_short=ema(portfolio[stream]['prices'],30)
+		ema_long=ema(portfolio[stream]['prices'],100)
 		if ema_short<ema_long:
 			portfolio[stream]['primed']=True
 	else:
