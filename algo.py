@@ -9,8 +9,8 @@ from binance.enums import *
 client = Client(config.API_KEY, config.API_SECRET)
 bm = BinanceSocketManager(client)
 
-WATCH_LIST=['dogeusdt@kline_5m', 'btcusdt@kline_5m', 'ethusdt@kline_5m','ltcusdt@kline_5m','eosusdt@kline_5m','bnbusdt@kline_5m','neousdt@kline_5m','xrpusdt@kline_5m','adausdt@kline_5m']
-min_order_decimals=[1,6,5,5,2,4,3,2,2]
+WATCH_LIST=['dogeusdt@kline_5m', 'btcusdt@kline_5m', 'ethusdt@kline_5m','ltcusdt@kline_5m','eosusdt@kline_5m','neousdt@kline_5m','xrpusdt@kline_5m','adausdt@kline_5m']
+min_order_decimals=[1,6,5,5,2,3,2,2]
 
 # total portfolio size of 500 USD and max 2 positions
 CASH=750.00000
